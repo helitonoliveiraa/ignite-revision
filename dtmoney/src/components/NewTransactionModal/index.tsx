@@ -2,6 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useState, FormEvent } from 'react';
 
 import { CloseIcon, IncomeIcon, OutcomeIcon } from '../../assets/icons';
+import { useTransaction } from '../../hooks/useTransaction';
 import { Button } from '../Button';
 import { Input } from '../Input';
 import { Strong } from '../Strong';
@@ -16,14 +17,28 @@ type ModalProps = {
 }
 
 export function NewTransactionModal({ isOpen, onClose }: ModalProps) {
-  const [transactionType, setTransactionType] = useState<TransactionType>('income');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState(0);
+  const [type, setType] = useState<TransactionType>('income');
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState('');
 
-  function handleCreateNewTransaction(event: FormEvent) {
+  const { createTransaction } = useTransaction();
+
+  async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
-    // onClose();
+
+    await createTransaction({
+      type,
+      title,
+      amount,
+      category
+    });
+    
+    setType('income');
+    setTitle('');
+    setAmount(0);
+    setCategory('');
+    onClose();
   }
 
   return (
@@ -45,31 +60,33 @@ export function NewTransactionModal({ isOpen, onClose }: ModalProps) {
               <S.Wrapper>
                 <Input 
                   placeholder='Name'
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
                 />
 
                 <Input 
                   placeholder='price' 
                   type='number'
-                  value={price}
-                  onChange={e => setPrice(Number(e.target.value))} 
+                  value={amount}
+                  onChange={e => setAmount(Number(e.target.value))} 
                 />
 
                 <S.WrapperButtons>
                   <Button  
+                    type='button'
                     icon={IncomeIcon} 
                     withIcon='default'
-                    income={transactionType === 'income'}
-                    onClick={() => setTransactionType('income')}
+                    income={type === 'income'}
+                    onClick={() => setType('income')}
                   >
                     Income
                   </Button>
                   <Button 
+                    type='button'
                     icon={OutcomeIcon} 
                     withIcon='default'
-                    outcome={transactionType === 'outcome'}
-                    onClick={() => setTransactionType('outcome')}
+                    outcome={type === 'outcome'}
+                    onClick={() => setType('outcome')}
                   >
                     Outcome
                   </Button>

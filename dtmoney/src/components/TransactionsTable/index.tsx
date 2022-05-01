@@ -1,6 +1,21 @@
+import { useTransaction } from '../../hooks/useTransaction';
+import { formatPrice } from '../../utils';
+
 import * as S from './styles';
 
 export function TransactionsTable() {
+  const { transactions } = useTransaction();
+
+  const formattedTransactions = transactions.map(transaction => {
+    return {
+      ...transaction,
+      amount: formatPrice({
+        amount: transaction.amount,
+        type: transaction.type,
+      }),
+    }
+  });
+
   return (
     <S.Container>
       <S.Table>
@@ -14,24 +29,14 @@ export function TransactionsTable() {
         </thead>
 
         <tbody>
-          <tr>
-            <S.Td ribbon='left'>Desenvolvimento de site</S.Td>
-            <S.Td type='income'>R$ 12.000,00</S.Td>
-            <S.Td>Venda</S.Td>
-            <S.Td>13/04/2021</S.Td>
-          </tr>
-          <tr>
-            <S.Td ribbon='left'>Desenvolvimento de site</S.Td>
-            <S.Td type='outcome'>- R$ 12.000,00</S.Td>
-            <S.Td>Venda</S.Td>
-            <S.Td>13/04/2021</S.Td>
-          </tr>
-          <tr>
-            <S.Td ribbon='left'>Desenvolvimento de site</S.Td>
-            <S.Td type='income'>R$ 12.000,00</S.Td>
-            <S.Td>Venda</S.Td>
-            <S.Td>13/04/2021</S.Td>
-          </tr>
+          {formattedTransactions.map(transaction => (
+            <tr key={transaction.id}>
+              <S.Td ribbon='left'>{transaction.title}</S.Td>
+              <S.Td type={transaction.type}>{transaction.amount}</S.Td>
+              <S.Td>{transaction.category}</S.Td>
+              <S.Td>{transaction.createdAt}</S.Td>
+            </tr>
+          ))}
         </tbody>
       </S.Table>
     </S.Container>

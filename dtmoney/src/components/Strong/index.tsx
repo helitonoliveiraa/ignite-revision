@@ -5,6 +5,6 @@ type StrongProps = ComponentProps<typeof S['Container']> & {
   children: string;
 }
 
-export function Strong({ children, color = 'default', ...props }: StrongProps) {
-  return <S.Container color={color} {...props}>{children}</S.Container>
+export function Strong({ children, color = 'default', size = 'default', ...props }: StrongProps) {
+  return <S.Container color={color} size={size} {...props}>{children}</S.Container>
 }

@@ -15,5 +15,14 @@ export const Container = styled('strong', {
         color: '$white',
       },
     },
+    size: {
+      default: {
+        fontSize: '$3',
+      },
+      middle: {
+        fontSize: '$2',
+        fontWeight: '$semiBold',
+      },
+    },
   },
 });

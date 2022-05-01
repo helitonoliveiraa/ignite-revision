@@ -41,6 +41,10 @@ export const { styled, css, theme, globalCss } = createStitches({
       24: '2.4rem',
       28: '2.8rem',
       32: '3.2rem',
+      36: '3.6rem',
+      40: '4rem',
+      44: '4.4rem',
+      48: '4.8rem',
       64: '6.4rem',
     },
     radii: {
